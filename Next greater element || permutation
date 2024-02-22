@@ -1,0 +1,24 @@
+class Solution {
+public:
+    int nextGreaterElement(int n) {
+        string nums = to_string(n);
+
+        int i= nums.size()-2;
+        while(i>=0 && nums[i]>=nums[i+1]){
+            i--;
+        }
+
+        if(i==-1) return -1;
+         
+         int k= nums.size()-1;
+        while(nums[i]>=nums[k]) k--;
+
+        swap(nums[i],nums[k]);
+
+        reverse(nums.begin()+i+1,nums.end());
+        long ans= stol(nums);
+        if(ans>INT_MAX) return -1;
+        return ans;
+        
+    }
+};
