@@ -1,0 +1,25 @@
+#include <iostream>
+#include <string>
+
+int Solve(string str, int i, int j) {
+	if (i == j)
+		return 1;
+
+	if (i > j)
+		return 0;
+
+	if (str[i] == str[j]) {
+		
+		return 1 + Solve(str, i + 1, j) + Solve(str, i, j - 1);
+	} else {
+	
+		return Solve(str, i + 1, j) + Solve(str, i, j - 1) - Solve(str, i + 1, j - 1);
+	}
+}
+
+
+int main() {
+	string str = "abcb";
+	cout << "Total palindromic subsequence are: " << Solve(str, 0, str.length() - 1) << endl;
+	return 0;
+}
