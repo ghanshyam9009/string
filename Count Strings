@@ -1,0 +1,41 @@
+#include <bits/stdc++.h> 
+bool valid(int row,int col,int n,int m)
+{
+    return row>=0 && col>=0 && row<n && col<m;
+}
+void count(int str_ind,int curi,int curj,vector<string>& grid,string & s,
+vector<vector<int>>& vis,int & ans,int n,int m)
+{
+    if (str_ind==s.size())
+    {
+        ans++;
+        return;
+    }
+    vis[curi][curj]=1;
+    int deli[]={0,0,1,-1};
+    int delj[]={1,-1,0,0};
+    for (int i=0;i<4;i++)
+    {
+        int newi=curi+deli[i];
+        int newj=curj+delj[i];
+        if (valid(newi,newj,n,m) &&  vis[newi][newj]==0 && grid[newi][newj]==s[str_ind])
+        {
+            count(str_ind+1,newi,newj,grid,s,vis,ans,n,m);
+        }
+    }
+    vis[curi][curj]=0;
+}
+int countStrings(int n, int m, vector<string> &grid , string &s)
+{
+    int ans=0;
+    vector<vector<int>>vis(n,vector<int>(m,0));
+	for (int i=0;i<n;i++)
+    {
+        for (int j=0;j<m;j++)
+        {
+            if (s[0]==grid[i][j])
+            count(1,i,j,grid,s,vis,ans,n,m);
+        }
+    }
+    return ans;
+}
