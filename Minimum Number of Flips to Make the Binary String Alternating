@@ -1,0 +1,41 @@
+class Solution {
+public:
+    int minFlips(string s) {
+        int n = s.size();
+        // Concatenate the string with itself to handle wrapping
+        s = s + s;
+        
+        string alt1, alt2;
+        // Generate two alternate patterns of '0' and '1' for comparison
+        for (int i = 0; i < n*2; ++i) {
+            alt1 += (i % 2 == 0) ? '0' : '1'; // Alternate pattern '0101...'
+            alt2 += (i % 2 == 0) ? '1' : '0'; // Alternate pattern '1010...'
+        }
+        
+        int res = INT_MAX; // Initialize the result to maximum possible value
+        int diff1 = 0, diff2 = 0; // Initialize counts for differences for both patterns
+        for (int r = 0 ; r < n*2 ; ++r) {
+            // Compare the characters of the original string with the generated alternate patterns
+            if (s[r] != alt1[r])
+                diff1++; // Increment diff1 if there's a difference
+            if (s[r] != alt2[r])
+                diff2++; // Increment diff2 if there's a difference
+                
+            // When r reaches or exceeds n, it means we've moved past the original string once
+            if ( r >= n ) {
+                // Adjust diff1 and diff2 by subtracting the counts of characters that move out of the window
+                if (s[r - n ] != alt1[r - n ])
+                    diff1--; // Decrement diff1 if the character moves out of the window
+                if (s[r - n] != alt2[r - n])
+                    diff2--; // Decrement diff2 if the character moves out of the window
+            }
+            
+            // When the window size equals n (or r reaches n - 1)
+            if ((r) >= n - 1) {
+                // Update the result with the minimum of diff1 and diff2
+                res = min(res, min(diff1, diff2));
+            }
+        }
+        return res; // Return the minimum number of flips needed
+    }
+};
