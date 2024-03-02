@@ -1,0 +1,48 @@
+
+#include<bits/stdc++.h>
+using namespace std;
+
+ 
+
+string UniqueCharacters(string str){
+    unordered_set<char>st;
+    for(auto it : str){
+        st.insert(it);
+    }
+
+    int left=0; int right=0; int uniquecount=st.size();
+    unordered_map<char,int>mpcount; int minlen=INT_MAX;
+    string s="";
+
+ 
+    while(right<str.length()){
+        mpcount[str[right]]++;
+
+        while(mpcount.size()==uniquecount && left<str.length()){
+            if(minlen>right-left+1){
+                minlen=right-left+1;
+                s=str.substr(left,minlen);
+            }
+            mpcount[str[left]]--;
+            if(mpcount[str[left]]==0)mpcount.erase(str[left]);
+            left++;
+        }
+        right++;
+    }
+    return s;
+}
+
+ 
+
+int main() {
+
+string str;
+
+cin>>str;
+
+string result = UniqueCharacters(str);
+
+cout<<result<<"\n";
+
+}
+
