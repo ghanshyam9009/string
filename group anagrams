@@ -1,0 +1,144 @@
+class Solution {
+public:
+    vector<vector<string>> groupAnagrams(vector<string>& strs) {
+        unordered_map<string , vector<string>> anagramGroups;
+
+        for( const string& word: strs){
+
+            string key = word;
+            sort(key.begin(),key.end());
+
+            if(anagramGroups.find(key)==anagramGroups.end()){
+                anagramGroups[key]= {word};
+            }
+            else{
+                anagramGroups[key].push_back(word);
+            }
+        }
+
+          vector<vector<string>> result;
+        for (const auto& group : anagramGroups) {
+            result.push_back(group.second);
+        }
+        
+        return result;
+
+
+    }
+};
+
+
+
+class Solution {
+public:
+    vector<vector<string>> groupAnagrams(vector<string>& strs) {
+        map<vector<int>, vector<string>> groups_mp;
+        vector<vector<string>> groups;
+        int k = 0;
+
+        for(int i=0; i<strs.size(); i++){
+            vector<int> freq(26, 0);
+            for(auto ch: strs[i]) freq[ch-'a']++;            
+            groups_mp[freq].push_back(strs[i]);
+        }
+
+        for(auto it: groups_mp) groups.push_back(it.second);
+        return groups;
+    }
+};
+
+
+
+class Solution {
+public:
+    vector<vector<string>> groupAnagrams(vector<string>& strs) {
+        unordered_map<string, vector<string>> groups_mp;
+        vector<vector<string>> groups;
+        int k = 0;
+
+        for(int i=0; i<strs.size(); i++){
+            string word = strs[i];
+            sort(word.begin(), word.end());           
+            groups_mp[word].push_back(strs[i]);
+        }
+
+        for(auto it: groups_mp) groups.push_back(it.second);
+        return groups;
+    }
+};
+
+
+optimized solutions
+
+class Solution {
+public:
+    vector<vector<string>> groupAnagrams(vector<string>& strs) {
+        unordered_map<string , vector<string>> anagramGroups;
+
+        for( const string& word: strs){
+
+            string key = word;
+            sort(key.begin(),key.end());
+
+            if(anagramGroups.find(key)==anagramGroups.end()){
+                anagramGroups[key]= {word};
+            }
+            else{
+                anagramGroups[key].push_back(word);
+            }
+        }
+
+          vector<vector<string>> result;
+        for (const auto& group : anagramGroups) {
+            result.push_back(group.second);
+        }
+        
+        return result;
+
+
+    }
+};
+
+Optimized Method 1:
+class Solution {
+public:
+    vector<vector<string>> groupAnagrams(vector<string>& strs) {
+        map<vector<int>, int> group_ind;
+        vector<vector<string>> groups;
+        int k = 0;
+        vector<int> freq(26, 0);
+        for(int i=0; i<strs.size(); i++){
+            fill(freq.begin(), freq.end(), 0);
+            for(auto ch: strs[i]){
+                freq[ch-'a']++;
+            }
+            if(group_ind.find(freq) != group_ind.end()) groups[group_ind[freq]].push_back(strs[i]);
+            else{
+                group_ind[freq] = k;
+                groups.push_back({strs[i]});
+                k++; 
+            }
+        }
+        return groups;
+    }
+};
+
+Optimized Method 2:
+class Solution {
+public:
+    vector<vector<string>> groupAnagrams(vector<string>& strs) {
+        unordered_map<string, int> group_ind;
+        vector<vector<string>> groups;
+        int k = 0;
+        for(int i=0; i<strs.size(); i++){
+            string temp = strs[i];
+            sort(temp.begin(), temp.end());
+            if(group_ind.find(temp) != group_ind.end()) groups[group_ind[temp]].push_back(strs[i]);
+            else{
+                group_ind[temp] = k;
+                groups.push_back({strs[i]});
+                k++; 
+            }
+        }
+        return groups;
+    }
