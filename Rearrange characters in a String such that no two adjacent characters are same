@@ -1,0 +1,147 @@
+
+
+class Solution {
+public:
+    string reorganizeString(string s) {
+        int hash[26] = {0};
+        for(int i = 0; i<s.size();i++) {
+            hash[s[i] - 'a']++;
+        }
+        char max_freq;
+        int maxi = INT_MIN;
+        for(int i = 0; i < 26;i++) {
+            if(hash[i] > maxi) {
+                maxi = hash[i];
+                max_freq = i + 'a';
+            }
+        }
+
+        int index = 0;
+        while(maxi > 0 && index < s.size()) {
+            s[index] = max_freq;
+            maxi--;
+            index += 2;
+        }
+        if(maxi != 0) {
+            return "";
+        }
+        // till now we have handle the case for max frequency character
+        // now lets do for other
+        hash[max_freq - 'a'] = 0;
+
+        for(int i = 0; i<26;i++) {
+            while(hash[i] > 0) {
+            index = index >= s.size() ? 1 : index;
+            s[index] = i + 'a';
+            hash[i]--;
+            index += 2;
+            }
+        }
+        return s;
+    }
+};
+
+
+
+// approach 2
+
+
+class Solution
+{
+    public:
+
+       LOGIC
+
+    KARNA KYA HAIN❓
+    1. Koi string diya hain ab usme yeh note rakhna hain ki
+    usme same chars side by side na ho.
+    2. Agar aisa hain to naya string banao jisme side by side na ho.
+
+    INTUITION &APPROACH
+    1. Most basic approach will be ki we will "count" each char "frequency"
+    and then put distinct chars side by side.
+
+    2. Now there will also be a basic observation ki agar kisi "char"
+    ki frequency pure "string" ki frequency ke "half se jyada" ho jaye  
+    then it will be not possible for us to put distict chars side by side.
+
+    3. So count(char) > ceil(length / 2) will be directly discarded.
+
+    4. Now ab ho kya raha hain: -
+        - We will create a vector which will store "frequency" of chars in
+         the string.
+        - We will create a priority_queue "{max-heap}" which will store the
+         chars with max freq at the top and others simultaneously.
+
+        - Now we will pop out the top elem from heap and check 
+        the following cases :-
+
+        - if the result is "empty" or the "last char of result" is not
+        matching with the popped out char.
+        - If yes then we will append the char in result.And push the 
+        {freq--,char} back in heap.
+         - else we will check if the "heap is empty"❓ Agar aisa hua to 
+         matlab char khatam ho gaye aur ek case aisa fas gaya jahan same
+        chars side by side aa gaye.
+         - Nahin to we will pop out the second char and append it in 
+         the result.
+        - We will push the {freq--,char} of second and first popped
+    character back in heap.
+
+    5. Pure question mein jyada kuch khas nahin kar rahe bas "heap"
+    ki help se we are able to sort the chars according to their frequency.
+
+//============================================================================================
+
+    string reorganizeString(string s)
+    {
+        vector<int> charCounts(26, 0);
+        //Freq Storage of chars
+        for (char c: s)
+        {
+            charCounts[c - 'a'] = charCounts[c - 'a'] + 1;
+        }
+        priority_queue<vector < int>> pq;
+        for (int i = 0; i < 26; i++)
+        {
+            if (charCounts[i] > 0)
+            {
+                pq.push(vector < int>
+                {
+                    charCounts[i],
+                    i + 'a' });
+            //Storing frequency and char in max heap
+            }
+        }
+        string result;
+        while (!pq.empty())
+        {
+            auto first = pq.top();
+            pq.pop();
+            if (result.empty() || first[1] != result.back())
+            //Char not matching with previously appended character
+            {
+                result += char(first[1]);
+                if (--first[0] > 0)
+                {
+            //If the freq has not become 0 then again push it in the heap
+                    pq.push(first);
+                }
+            }
+            else
+            //If char was matching with previously appended char
+            {
+                if (pq.empty())
+            //Koi char add karne ko hain hi nahin
+                    return "";
+                auto second = pq.top();
+                pq.pop();
+                result += char(second[1]);
+                if (--second[0] > 0)
+                    pq.push(second);
+                pq.push(first);
+            }
+        }
+        return result;
+    }
+};
