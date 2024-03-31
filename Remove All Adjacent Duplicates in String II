@@ -1,0 +1,50 @@
+Example 1:
+
+Input: s = "abcd", k = 2
+Output: "abcd"
+Explanation: There's nothing to delete.
+Example 2:
+
+Input: s = "deeedbbcccbdaa", k = 3
+Output: "aa"
+Explanation: 
+First delete "eee" and "ccc", get "ddbbbdaa"
+Then delete "bbb", get "dddaa"
+Finally delete "ddd", get "aa"
+
+
+class Solution {
+public:
+    string removeDuplicates(string s, int k) {
+        stack<pair<char,int>>st;
+        
+        for(char c:s)
+        {
+            if(!st.empty() && st.top().first==c)
+            {
+                //char is already present so just increase frequecny by one
+                st.top().second++;
+                if(st.top().second==k)
+                {
+                    st.pop();
+                }
+            } 
+            else
+            {
+                //char is new so freq is 1
+                st.push({c,1});
+            }
+        }
+        
+        string str;
+        while(!st.empty())
+        {
+            //st.top().first will append top char from stack st.top().sec times
+            str+=string(st.top().second,st.top().first);
+            st.pop();
+        }
+        
+        reverse(str.begin(),str.end());
+        return str;
+    }
+};
