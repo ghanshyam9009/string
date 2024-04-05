@@ -1,0 +1,47 @@
+Input: s = "leEeetcode"
+Output: "leetcode"
+Explanation: In the first step, either you choose i = 1 or i = 2, both will result "leEeetcode" to be reduced to "leetcode".
+
+
+class Solution {
+public:
+    string makeGood(string s) {
+        int i =0;
+        for(int j = 0; j < s.size(); j++){
+            if(i>0 && abs(s[i-1] - s[j])== 32){ //check top element
+                i--;
+            }else{
+                s[i++] = s[j];
+            }
+        }
+        s.resize(i); //resize string to size of result
+        return s;
+    }
+};
+
+
+
+// class Solution {
+// public:
+//     string makeGood(string s) {
+//         stack<char> charStk; 
+//         for(auto currChar : s){
+//             if(charStk.empty()){
+//                 charStk.push(currChar);
+//             }else{
+//                 if(isupper(charStk.top()) != isupper(currChar) && abs(charStk.top() - currChar) == 32){
+//                     charStk.pop();
+//                 }else{
+//                     charStk.push(currChar);
+//                 }
+//             }
+//         }
+//         string ans = "";
+//         while(!charStk.empty()){
+//             ans += charStk.top();
+//             charStk.pop();
+//         }
+//         reverse(ans.begin(), ans.end());
+//         return ans;
+//     }
+// };
