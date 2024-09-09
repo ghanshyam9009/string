@@ -1,0 +1,49 @@
+/* C++ program to find the length of the smallest
+substring consisting of maximum distinct characters */
+#include <bits/stdc++.h>
+using namespace std;
+
+int smallesteSubstr_maxDistictChar(string str)
+{
+    
+    unordered_set<char> st;
+  
+    for (int i = 0; i < str.length(); i++)
+        st.insert(str[i]);
+    
+    int unique = st.size();
+     unordered_map<char, int> mp;
+    
+    int res = INT_MAX;
+    int j = 0;
+
+    for (int i = 0; i < str.length(); i++) {
+      
+        mp[str[i]]++;
+      
+        while (mp.size() == unique && mp[str[j]] > 1) {
+            mp[str[j]]--;
+            j++;
+        }
+        
+        if (mp.size() == unique)
+            res = min(i - j + 1, res);
+    }
+    return res;
+}
+
+/* Driver program to test above function */
+int main()
+{
+    // Input String
+    string str = "AABBBCBB";
+
+    int len = smallesteSubstr_maxDistictChar(str);
+    cout << " The length of the smallest substring"
+            " consisting of maximum distinct "
+            "characters : "
+         << len;
+    return 0;
+}
+
+// This code was contributed by Abhijeet Kumar(abhijeet19403)
