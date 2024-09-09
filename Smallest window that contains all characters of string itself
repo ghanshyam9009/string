@@ -1,0 +1,58 @@
+#include <iostream>
+#include <string>
+#include <unordered_map>
+#include <unordered_set>
+#include <climits>
+using namespace std;
+
+string smallestWindowContainingAllUniqueChars(const string& s) {
+    // Step 1: Determine all unique characters in the string
+    unordered_set<char> uniqueChars(s.begin(), s.end());
+    int requiredUniqueCount = uniqueChars.size();  // Number of unique characters required
+
+    // Step 2: Initialize sliding window pointers and other necessary variables
+    unordered_map<char, int> windowCharCount;  // Character frequency map in the current window
+    int start = 0, minStart = 0, minLength = INT_MAX;
+    int uniqueCountInWindow = 0;  // Count of unique characters in the current window
+
+    // Step 3: Use the sliding window approach
+    for (int end = 0; end < s.size(); ++end) {
+        char endChar = s[end];
+        windowCharCount[endChar]++;  // Include the end character in the window
+
+        // If this character is part of the unique characters and its count matches the required frequency
+        if (windowCharCount[endChar] == 1) {
+            uniqueCountInWindow++;
+        }
+
+        // Step 4: Try to shrink the window from the left until it's no longer valid
+        while (uniqueCountInWindow == requiredUniqueCount) {
+            // Update the minimum window if the current one is smaller
+            if (end - start + 1 < minLength) {
+                minLength = end - start + 1;
+                minStart = start;
+            }
+
+            // Try to remove the character at the start of the window
+            char startChar = s[start];
+            windowCharCount[startChar]--;  // Decrease its frequency
+
+            // If this character is part of the unique characters and it's no longer in the window
+            if (windowCharCount[startChar] == 0) {
+                uniqueCountInWindow--;
+            }
+
+            start++;  // Move the start pointer to the right
+        }
+    }
+
+    // Step 5: Return the smallest window or an empty string if no valid window exists
+    return (minLength == INT_MAX) ? "" : s.substr(minStart, minLength);
+}
+
+int main() {
+    string s = "aabcbcdbca";
+    cout << "Smallest window containing all unique characters: " 
+         << smallestWindowContainingAllUniqueChars(s) << endl;
+    return 0;
+}
