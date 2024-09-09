@@ -1,0 +1,67 @@
+#include <iostream>
+#include <string>
+#include <unordered_map>
+#include <climits>
+using namespace std;
+
+string minWindow(string s, string t) {
+    if (s.empty() || t.empty()) return "";
+
+    // Step 1: Create a frequency map for characters in string t
+    unordered_map<char, int> required;
+    for (char c : t) required[c]++;
+
+    // Step 2: Initialize sliding window pointers and other necessary variables
+    unordered_map<char, int> window_counts;  // Character frequency map in the current window
+    int start = 0, end = 0;
+    int minStart = 0, minLength = INT_MAX;
+    int formed = 0;  // Number of unique characters in t that are currently in the window with the desired frequency
+    int requiredSize = required.size();  // Number of unique characters in t
+
+    // Step 3: Use the sliding window approach
+    while (end < s.size()) {
+        // Add the current character at end to the window
+        char endChar = s[end];
+        window_counts[endChar]++;
+
+        // If the frequency of the current character matches the desired frequency in t
+        if (required.find(endChar) != required.end() && window_counts[endChar] == required[endChar]) {
+            formed++;
+        }
+
+        // Step 4: Try to shrink the window from the left until it's no longer valid
+        while (start <= end && formed == requiredSize) {
+            char startChar = s[start];
+
+            // Update the minimum window if the current one is smaller
+            if (end - start + 1 < minLength) {
+                minLength = end - start + 1;
+                minStart = start;
+            }
+
+            // Remove the character at the start of the window
+            window_counts[startChar]--;
+
+            // If the character at start was part of t and is no longer in the required frequency
+            if (required.find(startChar) != required.end() && window_counts[startChar] < required[startChar]) {
+                formed--;
+            }
+
+            start++;  // Move the start pointer to the right
+        }
+
+        // Expand the window by moving the end pointer to the right
+        end++;
+    }
+
+    // Step 5: Return the smallest window or an empty string if no valid window exists
+    return (minLength == INT_MAX) ? "" : s.substr(minStart, minLength);
+}
+
+int main() {
+    string s = "ADOBECODEBANC";
+    string t = "ABC";
+    cout << "Smallest window containing all characters of '" << t << "': " 
+         << minWindow(s, t) << endl;
+    return 0;
+}
