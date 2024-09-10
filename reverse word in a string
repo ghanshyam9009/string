@@ -1,0 +1,88 @@
+class Solution {
+public:
+    string reverseWords(string s) {
+        vector<string> words;
+        string temp = "";
+        for(char c : s)
+        {class Solution {
+public:
+    string largestOddNumber(string num) {
+        for (int i = num.length() - 1; i >= 0; i--) {
+            if ((num[i] - '0') % 2 == 1) {
+                return num.substr(0, i + 1);
+            }
+        }
+        return "";        
+    }
+};
+            if(c == ' ')
+            {
+                if(!temp.empty())
+                {
+                    words.push_back(temp);
+                    temp.clear();
+                }
+            }
+            else
+            {
+                temp.push_back(c);
+            }
+        }
+        if(!temp.empty())
+        {
+            words.push_back(temp);
+        }
+        reverse(words.begin(), words.end());
+
+        string ans;
+        for(string word : words)
+        {
+            ans += word + ' ';
+        }
+        if(!ans.empty())
+        {
+            ans.pop_back();
+        }
+        return ans;
+    }
+};
+
+
+
+
+// class Solution {
+// public:
+//     string reverseWords(string s) {
+//         stack<string>st;
+//         string str;
+//         for(auto ch:s){
+//             if(ch==' '){
+// // IF WE GET A SPACE AND ALSO STR IS EMPTY THEN DO NOTHING.
+// // BUT IF WE GET SPACE AND STR IS NOT EMPTY THEN PUSH STR INTO STACK AND CLEAR THE STR STRING.
+//                 if(!str.empty()){
+//                 st.push(str);
+//                 str.clear();
+//                 }
+//             }
+// // IF WE FOUND CHARACTER OTHER THAN SPACE THEN CONCATENATE THAT CHARCTER INTO STR.
+//             else{
+//                 str+=ch;
+//             }
+//         }
+// // AFTER COMING OUT OF THE LOOP PUSH STR INTO STACK IF STR IS NOT EMPTY.
+// // DRY RUN 1ST TEST CASE TO UNDERSTAND THIS CONDITION.
+//         if(!str.empty()){
+//             st.push(str);
+//         }
+// // AT LAST POP THE STACK AND CONCATENATE ALL WORDS INTO NEW STRING ANS AND DON'T FORGET TO ADD SPACE.
+//         string ans;
+//         while(!st.empty()){
+//             ans+=st.top();
+//             st.pop();
+//             if(!st.empty()){
+//                 ans+=' ';
+//             }
+//         }
+//         return ans;
+//     }
+// };
