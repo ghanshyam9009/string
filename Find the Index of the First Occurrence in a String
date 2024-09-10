@@ -1,29 +1,6 @@
 class Solution {
 public:
     int strStr(string haystack, string needle) {
-        int n=haystack.size();
-        int m=needle.size();
-        for(int i=0;i<n;i++){
-            if(haystack[i]==needle[0]){
-                bool flag=true;
-                for(int k=0;k<m;k++){
-                    if(needle[k]!=haystack[i+k]){
-                        flag=false;
-                        break;
-                    }
-                }
-                if(flag)
-                return i;
-            }
-        }
-        return -1;
-    }
-};
-
-
-class Solution {
-public:
-    int strStr(string haystack, string needle) {
         int i,j;
         int len1=haystack.size(), len2=needle.size();
         for (i = 0; i <= len1-len2; i++) {
@@ -39,3 +16,55 @@ public:
         return -1;
     }
 };
+
+
+
+
+
+// class Solution {
+// public:
+//     int strStr(string haystack, string needle) {
+//         if (haystack.length() < needle.length()) {
+//             return -1;
+//         }
+        
+//         for (int i = 0; i <= haystack.length() - needle.length(); i++) {
+//             if (haystack.substr(i, needle.length()) == needle) {
+//                 return i;
+//             }
+//         }
+        
+//         return -1;        
+//     }
+// };
+
+
+
+
+
+// class Solution {
+//     public int strStr(String haystack, String needle) {
+//         int l = needle.length();
+//         int count = 0;
+//         int i = 0;
+//         boolean isOccurrence = true;
+//         while(i < haystack.length())
+//         {
+//             if(haystack.charAt(i) == needle.charAt(count))
+//             {
+//                 count++;
+//                 i++;
+//             }
+//             else{
+//                 i++;
+//                 i= i-count;
+//                 count = 0;
+//             }
+//              if(count==needle.length())
+//             {
+//                 return i-count;
+//             }
+//         }
+//             return -1;
+//     }
+// }
